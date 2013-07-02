@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function build_pre_build {
+  _TARBALL="throbber-korora.tar.gz"
+
+  _pushd "${WORKING_PACKAGES_DIR}/${KP_NAME}/build/sources/"
+
+  _info "Creating throbber tarball ..."
+
+  tar -cf "${_TARBALL}" throbber-*.png
+
+  for _IN in $(seq 17 31)
+  do
+    _IO=$((32-${_IN}))
+    _TN=$(printf "throbber-%03d" ${_IN})
+    _TO=$(printf "throbber-%03d" ${_IO})
+
+    tar --transform="s|${_TO}|${_TN}|" -rf "${_TARBALL}" "${_TO}.png"
+  done
+
+  _popd
+}

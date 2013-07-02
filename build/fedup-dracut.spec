@@ -9,6 +9,7 @@ Summary:    The Fedora Upgrade tool initramfs environment
 License:    GPLv2+
 URL:        https://github.com/wgwoods/fedup-dracut
 Source0:    https://github.com/downloads/wgwoods/fedup-dracut/%{name}-%{version}.tar.xz
+Source1:    throbber-korora.tar.gz
 
 Summary:        initramfs environment for system upgrades
 BuildRequires:  rpm-devel >= 4.10.0
@@ -35,7 +36,8 @@ The plymouth theme used during system upgrade.
 
 %prep
 %setup -q
-
+ls
+tar -xf %{SOURCE1} -C plymouth/
 
 %build
 make %{?_smp_mflags} CFLAGS="%{optflags}"
