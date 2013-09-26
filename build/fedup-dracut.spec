@@ -8,7 +8,7 @@ Summary:    The Fedora Upgrade tool initramfs environment
 
 License:    GPLv2+
 URL:        https://github.com/wgwoods/fedup-dracut
-Source0:    https://github.com/downloads/wgwoods/fedup-dracut/%{name}-%{version}.tar.xz
+Source0:    https://github.com/downloads/wgwoods/fedup-dracut/%{name}-%{version}.tar.gz
 Source1:    throbber-korora.tar.gz
 
 Summary:        initramfs environment for system upgrades
