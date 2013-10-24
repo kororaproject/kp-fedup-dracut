@@ -2,13 +2,13 @@
 %global plymouthver 0.8.6
 
 Name:       fedup-dracut
-Version:    0.7.2
-Release:    1%{?dist}.1
+Version:    0.7.3
+Release:    2%{?dist}.1
 Summary:    The Fedora Upgrade tool initramfs environment
 
 License:    GPLv2+
 URL:        https://github.com/wgwoods/fedup-dracut
-Source0:    https://github.com/wgwoods/fedup-dracut/archive/%{version}.tar.xz
+Source0:    http://pkgs.fedoraproject.org/repo/pkgs/fedup-dracut/fedup-dracut-0.7.3.tar.xz/ad523bd61ec8637b4d76e653caa3648c/%{name}-%{version}.tar.xz
 Source1:    throbber-korora.tar.gz
 
 Summary:        initramfs environment for system upgrades
@@ -36,7 +36,6 @@ The plymouth theme used during system upgrade.
 
 %prep
 %setup -q
-ls
 tar -xf %{SOURCE1} -C plymouth/
 
 %build
@@ -50,7 +49,7 @@ make install DESTDIR=$RPM_BUILD_ROOT \
              DRACUTMODDIR=%{dracutmoddir}
 
 %files
-%doc README.asciidoc TODO.asciidoc COPYING
+%doc README.asciidoc TODO.asciidoc COPYING makefeduprepo
 %{_libexecdir}/system-upgrade-fedora
 %{dracutmoddir}/85system-upgrade-fedora
 %{dracutmoddir}/90system-upgrade
@@ -60,6 +59,16 @@ make install DESTDIR=$RPM_BUILD_ROOT \
 
 
 %changelog
+* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
+* Mon Mar 18 2013 Will Woods <wwoods@redhat.com> 0.7.3-1
+- Include 'makefeduprepo' script
+- Fix plymouthd crash with encrypted /home (#896023)
+
+* Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Wed Dec 05 2012 Will Woods <wwoods@redhat.com> 0.7.2-1
 - Remove awful hack to forcibly sync data to disk (fixed in systemd 195-8)
 - Clean up after upgrade finishes
