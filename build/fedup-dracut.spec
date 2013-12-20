@@ -2,14 +2,15 @@
 %global plymouthver 0.8.6
 
 Name:       fedup-dracut
-Version:    0.7.3
-Release:    2%{?dist}.1
+Version:    0.8.0
+Release:    2%{?dist}
 Summary:    The Fedora Upgrade tool initramfs environment
 
 License:    GPLv2+
 URL:        https://github.com/wgwoods/fedup-dracut
-Source0:    http://pkgs.fedoraproject.org/repo/pkgs/fedup-dracut/fedup-dracut-0.7.3.tar.xz/ad523bd61ec8637b4d76e653caa3648c/%{name}-%{version}.tar.xz
+Source0:    http://pkgs.fedoraproject.org/repo/pkgs/fedup-dracut/fedup-dracut-%{version}.tar.xz/8ba57692a2cff0fa919c4e6740f60f6a/%{name}-%{version}.tar.xz
 Source1:    throbber-korora.tar.gz
+Patch1:     0001-Fix-backward-compatibility-with-fedup-0.7.x.patch
 
 Summary:        initramfs environment for system upgrades
 BuildRequires:  rpm-devel >= 4.10.0
@@ -18,7 +19,7 @@ BuildRequires:  glib2-devel
 Requires:       rpm >= 4.10.0
 Requires:       plymouth >= %{plymouthver}
 Requires:       systemd >= 195-8
-Requires:       dracut
+Requires:       dracut >= 025
 
 %package plymouth
 BuildRequires:  plymouth-devel
@@ -36,6 +37,8 @@ The plymouth theme used during system upgrade.
 
 %prep
 %setup -q
+%patch1 -p1
+
 tar -xf %{SOURCE1} -C plymouth/
 
 %build
@@ -59,15 +62,17 @@ make install DESTDIR=$RPM_BUILD_ROOT \
 
 
 %changelog
-* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7.3-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+* Tue Dec 10 2013 Will Woods <wwoods@redhat.com> 0.8.0-2
+- Fix compatibility with fedup 0.7.x
 
-* Mon Mar 18 2013 Will Woods <wwoods@redhat.com> 0.7.3-1
+* Wed Dec 4 2013 Will Woods <wwoods@redhat.com> 0.8.0-1
+- Always put a shell on tty2
+- Show text output from upgrade if graphics not available
+- Fix --iso upgrades to F20 (#1024223)
+
+* Mon Mar 18 2013 Will Woods <wwoods@redhat.com> 0.7.3-0
 - Include 'makefeduprepo' script
 - Fix plymouthd crash with encrypted /home (#896023)
-
-* Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
 * Wed Dec 05 2012 Will Woods <wwoods@redhat.com> 0.7.2-1
 - Remove awful hack to forcibly sync data to disk (fixed in systemd 195-8)

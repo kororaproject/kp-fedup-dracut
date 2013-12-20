@@ -1,0 +1,39 @@
+From f3c51b6ca3c4ae5289272e7d0db719a4eaf307f4 Mon Sep 17 00:00:00 2001
+From: Will Woods <wwoods@redhat.com>
+Date: Tue, 10 Dec 2013 14:07:06 -0500
+Subject: [PATCH] Fix backward compatibility with fedup-0.7.x
+
+Fedup 0.7.x still exists in the world, and it has some some special
+needs in order for us to get the system to start the upgrade:
+
+1) /run/initramfs/upgrade.conf needs to exist and contain the usual
+values for UPGRADEROOT and UPGRADELINK.
+
+2) /proc/cmdline will contain "systemd.unit=system-upgrade.target", so
+we need to make sure that exists inside the initramfs.
+
+So let's set that stuff up, so we don't stick people in infinite reboot
+loops if they're using an old version of fedup with a newer
+fedup-dracut.
+---
+ 90system-upgrade/upgrade-pre-pivot.sh | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/90system-upgrade/upgrade-pre-pivot.sh b/90system-upgrade/upgrade-pre-pivot.sh
+index 58cf06f..5556ffd 100644
+--- a/90system-upgrade/upgrade-pre-pivot.sh
++++ b/90system-upgrade/upgrade-pre-pivot.sh
+@@ -11,3 +11,10 @@ mkdir -p /run/systemd/system/sysinit.target.wants
+ for d in system system/sysinit.target.wants; do
+     mv -f /etc/systemd/$d/system-upgrade-shell.service /run/systemd/$d/
+ done
++
++# fedup-0.7.x compat. drop this when 0.7.x is old & irrelevant.
++if grep -qw 'systemd.unit=system-upgrade.target' /proc/cmdline; then
++    echo "UPGRADEROOT=/system-upgrade-root" > /run/initramfs/upgrade.conf
++    echo "UPGRADELINK=/system-upgrade" >> /run/initramfs/upgrade.conf
++    ln -sf upgrade.target /etc/systemd/system/system-upgrade.target
++fi
+-- 
+1.8.3.1
+
