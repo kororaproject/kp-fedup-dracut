@@ -2,15 +2,14 @@
 %global plymouthver 0.8.6
 
 Name:       fedup-dracut
-Version:    0.8.0
-Release:    2%{?dist}
+Version:    0.9.0
+Release:    1%{?dist}
 Summary:    The Fedora Upgrade tool initramfs environment
 
 License:    GPLv2+
 URL:        https://github.com/wgwoods/fedup-dracut
-Source0:    http://pkgs.fedoraproject.org/repo/pkgs/fedup-dracut/fedup-dracut-%{version}.tar.xz/8ba57692a2cff0fa919c4e6740f60f6a/%{name}-%{version}.tar.xz
+Source0:    https://github.com/wgwoods/fedup-dracut/archive/%{version}.tar.gz
 Source1:    throbber-korora.tar.gz
-Patch1:     0001-Fix-backward-compatibility-with-fedup-0.7.x.patch
 
 Summary:        initramfs environment for system upgrades
 BuildRequires:  rpm-devel >= 4.10.0
@@ -37,7 +36,6 @@ The plymouth theme used during system upgrade.
 
 %prep
 %setup -q
-%patch1 -p1
 
 tar -xf %{SOURCE1} -C plymouth/
 
@@ -62,6 +60,18 @@ make install DESTDIR=$RPM_BUILD_ROOT \
 
 
 %changelog
+* Tue Oct 21 2014 Will Woods <wwoods@redhat.com> 0.9.0-1
+- Use rpm's selinux plugin if available (#1146580)
+- Fix racy LUKS unlock failure (#1044484)
+- Enlongthen progress bar in fedup plymouth theme
+- Other small progress fixes
+
+* Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Tue Dec 10 2013 Will Woods <wwoods@redhat.com> 0.8.0-2
 - Fix compatibility with fedup 0.7.x
 
