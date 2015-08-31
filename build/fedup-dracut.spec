@@ -2,13 +2,13 @@
 %global plymouthver 0.8.6
 
 Name:       fedup-dracut
-Version:    0.9.0
+Version:    0.9.2
 Release:    1%{?dist}
 Summary:    The Fedora Upgrade tool initramfs environment
 
 License:    GPLv2+
 URL:        https://github.com/wgwoods/fedup-dracut
-Source0:    https://github.com/wgwoods/fedup-dracut/archive/%{version}.tar.gz
+Source0:    https://github.com/downloads/wgwoods/fedup-dracut/%{name}-%{version}.tar.xz
 Source1:    throbber-korora.tar.gz
 
 Summary:        initramfs environment for system upgrades
@@ -60,6 +60,13 @@ make install DESTDIR=$RPM_BUILD_ROOT \
 
 
 %changelog
+* Mon May 18 2015 Will Woods <wwoods@redhat.com> 0.9.2-1
+- Fix reboot at end of upgrade (#1209941)
+
+* Tue Feb 03 2015 Will Woods <wwoods@redhat.com> 0.9.0-2
+- Don't write the entire system journal to upgrade.log (#1161366)
+- Try to disable console blanking during upgrade (#1173135)
+
 * Tue Oct 21 2014 Will Woods <wwoods@redhat.com> 0.9.0-1
 - Use rpm's selinux plugin if available (#1146580)
 - Fix racy LUKS unlock failure (#1044484)
